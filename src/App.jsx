@@ -25,6 +25,8 @@ function App () {
 	const [ rowOverrides, setRowOverrides ] = useState({});
 	const gridRef = useRef(null);
 	const { editedCells, recordEdit, clearRow } = useEditedCells();
+	const editedCellsLength = Object.keys(editedCells).length;
+
 	const { mutate: saveEditedRow } = useSaveEditedRow();
 	const { data: initialRows = [], isLoading, isError } = useTeamRecords();
 
@@ -33,7 +35,7 @@ function App () {
 	const rows = initialRows.map((row) => ({ ...row, ...rowOverrides[row.id] }));
 
 	useEffect(() => {
-		const hasEdits = Boolean(Object.keys(editedCells).length > 0);
+		const hasEdits = Boolean(editedCellsLength > 0);
 
 		gridRef.current?.api.setColumnsVisible([ 'actions' ], hasEdits);
 
@@ -41,7 +43,7 @@ function App () {
 			columns: [ 'role', 'actions' ],
 			force: true,
 		});
-	}, [ editedCells ]);
+	}, [ editedCellsLength ]);
 
 	const handleCellValueChanged = useCallback(({ data, colDef, newValue, oldValue }) => {
 		// Ignore when the grid is first initialised.
@@ -95,7 +97,7 @@ function App () {
 				</div>
 				<div className="edit-summary">
 					<span className="summary-dot" aria-hidden="true" />
-					<span>{Object.keys(editedCells).length} unsaved {Object.keys(editedCells).length === 1 ? 'row' : 'rows'}</span>
+					<span>{ editedCellsLength } unsaved { editedCellsLength === 1 ? 'row' : 'rows'}</span>
 				</div>
 			</header>
 
