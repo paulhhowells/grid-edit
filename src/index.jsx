@@ -9,6 +9,16 @@ import { ErrorBoundary, getErrorMessage } from 'react-error-boundary';
 
 const queryClient = new QueryClient();
 
+// TanStack Query Devtools
+window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+// This code is only for TanStack TypeScript
+// declare global {
+//   interface Window {
+//     __TANSTACK_QUERY_CLIENT__:
+//       import('@tanstack/query-core').QueryClient
+//   }
+// }
+
 worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
 	createRoot(document.getElementById('root')).render(
 		<StrictMode>
