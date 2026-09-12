@@ -5,16 +5,26 @@ import App from './App.jsx';
 import { worker } from './mocks/browser.js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ErrorBoundary, getErrorMessage } from 'react-error-boundary';
 
 const queryClient = new QueryClient();
 
 worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
 	createRoot(document.getElementById('root')).render(
 		<StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<App />
-				<ReactQueryDevtools initialIsOpen={false} />
-			</QueryClientProvider>
+			<ErrorBoundary fallbackRender={({ error, resetErrorBoundary }) => (
+				<div role="alert">
+					<p>Something went wrong:</p>
+					<pre>{getErrorMessage(error)}</pre>
+					<button onClick={resetErrorBoundary}>Try again</button>
+				</div>
+			)}
+			>
+				<QueryClientProvider client={queryClient}>
+					<App />
+					<ReactQueryDevtools initialIsOpen={false} />
+				</QueryClientProvider>
+			</ErrorBoundary>
 		</StrictMode>,
 	);
 });
