@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { GET_ROWS_API } from '../constants';
 
-export function useTeamRecords() {
+export function useTeamRecords () {
 	return useQuery({
 		queryKey: ['team-records'],
 		queryFn: async () => {

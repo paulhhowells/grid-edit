@@ -19,9 +19,11 @@ export function useSaveEditedRow() {
 			return response.json();
 		},
 		onSuccess: ({ row }) => {
+			// Keep the visible query data in sync with the row returned by the server.
 			queryClient.setQueryData(['team-records'], (currentRows = []) =>
 				currentRows.map((currentRow) => (currentRow.id === row.id ? row : currentRow)),
 			);
+			queryClient.invalidateQueries({ queryKey: ['team-records'] });
 		},
 	});
 }
