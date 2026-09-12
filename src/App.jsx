@@ -99,23 +99,27 @@ function App() {
 					<span className="grid-label">Directory</span>
 					<span className="grid-hint">Role is editable</span>
 				</div>
-				{isLoading && <div className="grid-state">Loading team records...</div>}
-				{isError && <div className="grid-state error">Could not load team records.</div>}
-				{!isLoading && !isError && (
-					<div className="ag-theme-quartz grid-wrapper">
-						<AgGridReact
-							ref={gridRef}
-							rowData={rows}
-							columnDefs={columnDefs}
-							context={gridContext}
-							onCellValueChanged={handleCellValueChanged}
-							getRowId={getRowId}
-							headerHeight={52}
-							rowHeight={64}
-							animateRows
-						/>
-					</div>
-				)}
+				{isLoading ? <div className="grid-state">Loading team records...</div> : null}
+				{isError ? <div className="grid-state error">Could not load team records.</div> : null}
+				{
+					(!isLoading && !isError)
+						? (
+							<div className="ag-theme-quartz grid-wrapper">
+								<AgGridReact
+									ref={gridRef}
+									rowData={rows}
+									columnDefs={columnDefs}
+									context={gridContext}
+									onCellValueChanged={handleCellValueChanged}
+									getRowId={getRowId}
+									headerHeight={52}
+									rowHeight={64}
+									animateRows
+								/>
+							</div>
+						)
+						:null
+				}
 			</section>
 		</main>
 	);
