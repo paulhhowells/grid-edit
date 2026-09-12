@@ -1,0 +1,30 @@
+:root {
+  --ink: #18231f;
+  --muted: #6c7972;
+  --paper: #f4f6f1;
+  --panel: #fffefa;
+  --line: #dfe5dd;
+  --accent: #d05b3f;
+  --accent-soft: #f8e7df;
+  font: 16px/1.5 'Trebuchet MS', 'Gill Sans', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: radial-gradient(circle at 10% 0%, #fff9ec 0, transparent 30rem), var(--paper);
+}
+
+#root {
+  min-height: 100vh;
+}

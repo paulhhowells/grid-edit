@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "oxc"],
+  "jsPlugins": ["@stylistic/eslint-plugin"],
+  "rules": {
+		"curly": "error",
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }],
+		"@stylistic/indent": ["error", "tab"],
+		"@stylistic/jsx-indent-props": ["error", "tab"],
+    "@stylistic/semi": ["error", "always"]
+  }
+}
