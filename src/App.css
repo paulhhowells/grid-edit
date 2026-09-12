@@ -115,6 +115,11 @@ h1 {
   content: '·';
 }
 
+.edited-cell {
+	background: var(--accent-soft) !important;
+  color: var(--accent);
+}
+
 .row-actions {
   display: flex;
   align-items: center;

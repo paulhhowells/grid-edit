@@ -1,6 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import {
+	AllCommunityModule,
+	ModuleRegistry,
+	ValidationModule
+} from 'ag-grid-community';
 
 import { columnDefs } from './columnDefs';
 import { useEditedCells } from './hooks/useEditedCells';
@@ -11,17 +15,36 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import './App.css';
 
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([
+	AllCommunityModule,
+	ValidationModule,
+]);
 
 function App() {
 	const [rowOverrides, setRowOverrides] = useState({});
+	const gridRef = useRef(null);
 	const { editedCells, recordEdit, clearRow } = useEditedCells();
 	const { mutate: saveEditedRow } = useSaveEditedRow();
 	const { data: initialRows = [], isLoading, isError } = useTeamRecords();
 
+	// Does this enable keeping edits when the query cache refreshes?
+	// TODO add a test to document this.
 	const rows = initialRows.map((row) => ({ ...row, ...rowOverrides[row.id] }));
 
+	useEffect(() => {
+		gridRef.current?.api.refreshCells({
+			columns: ['role'],
+			force: true,
+		});
+	}, [editedCells]);
+
 	const handleCellValueChanged = ({ data, colDef, newValue, oldValue }) => {
+		// Ignore when the grid is first initialised.
+		if (oldValue === undefined) {
+			return;
+		}
+
+		// TODO probably ought to update the store when the cell has returned to an unchanged value.
 		if (newValue === oldValue || !colDef.field) {
 			return;
 		}
@@ -30,6 +53,7 @@ function App() {
 			...currentOverrides,
 			[data.id]: { ...currentOverrides[data.id], [colDef.field]: newValue },
 		}));
+
 		recordEdit(data.id, colDef.field, newValue, oldValue);
 	};
 
@@ -72,11 +96,13 @@ function App() {
 				{!isLoading && !isError && (
 					<div className="ag-theme-quartz grid-wrapper">
 						<AgGridReact
+							ref={gridRef}
 							rowData={rows}
 							columnDefs={columnDefs}
 							context={{
 								onSave: handleSave,
 								onUndo: handleUndo,
+								editedCells,
 							}}
 							onCellValueChanged={handleCellValueChanged}
 							getRowId={({ data }) => String(data.id)}

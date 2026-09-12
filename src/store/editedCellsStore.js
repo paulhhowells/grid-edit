@@ -18,7 +18,9 @@ export function editedCellsReducer(state, action) {
 			};
 		case 'clear-row': {
 			const editedCells = { ...state.editedCells };
+
 			delete editedCells[action.rowId];
+
 			return { ...state, editedCells };
 		}
 		default:
