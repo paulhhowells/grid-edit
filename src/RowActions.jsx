@@ -1,4 +1,4 @@
-export function RowActions({ data, context }) {
+export function RowActions ({ data, context }) {
 	return (
 		<div className="row-actions">
 			<button

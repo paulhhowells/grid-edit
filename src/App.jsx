@@ -21,8 +21,8 @@ ModuleRegistry.registerModules([
 
 const getRowId = ({ data }) => String(data.id);
 
-function App() {
-	const [rowOverrides, setRowOverrides] = useState({});
+function App () {
+	const [ rowOverrides, setRowOverrides ] = useState({});
 	const gridRef = useRef(null);
 	const { editedCells, recordEdit, clearRow } = useEditedCells();
 	const { mutate: saveEditedRow } = useSaveEditedRow();
@@ -34,10 +34,10 @@ function App() {
 
 	useEffect(() => {
 		gridRef.current?.api.refreshCells({
-			columns: ['role'],
+			columns: [ 'role' ],
 			force: true,
 		});
-	}, [editedCells]);
+	}, [ editedCells ]);
 
 	const handleCellValueChanged = useCallback(({ data, colDef, newValue, oldValue }) => {
 		// Ignore when the grid is first initialised.
@@ -56,28 +56,30 @@ function App() {
 		}));
 
 		recordEdit(data.id, colDef.field, newValue, oldValue);
-	}, [recordEdit]);
+	}, [ recordEdit ]);
 
 	const handleUndo = useCallback((rowId) => {
 		setRowOverrides((currentOverrides) => {
 			const nextOverrides = { ...currentOverrides };
+
 			delete nextOverrides[rowId];
+
 			return nextOverrides;
 		});
 		clearRow(rowId);
-	}, [clearRow]);
+	}, [ clearRow ]);
 
 	const handleSave = useCallback((editedRow) => {
 		saveEditedRow(editedRow, {
 			onSuccess: () => clearRow(editedRow.id),
 		});
-	}, [clearRow, saveEditedRow]);
+	}, [ clearRow, saveEditedRow ]);
 
 	const gridContext = useMemo(() => ({
 		onSave: handleSave,
 		onUndo: handleUndo,
 		editedCells,
-	}), [editedCells, handleSave, handleUndo]);
+	}), [ editedCells, handleSave, handleUndo ]);
 
 	return (
 		<main className="app-shell">
@@ -118,7 +120,7 @@ function App() {
 								/>
 							</div>
 						)
-						:null
+						: null
 				}
 			</section>
 		</main>

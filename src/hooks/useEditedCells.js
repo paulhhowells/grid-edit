@@ -1,6 +1,6 @@
 import { useEditedCellsStore } from '../store/editedCellsStore';
 
-export function useEditedCells() {
+export function useEditedCells () {
 	const editedCells = useEditedCellsStore((state) => state.editedCells);
 	const dispatch = useEditedCellsStore((state) => state.dispatch);
 

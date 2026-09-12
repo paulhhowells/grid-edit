@@ -13,7 +13,7 @@ export const columnDefs = [
 
 			return (
 				editedRow?.[params.colDef.field]
-					? ['editable-cell', 'edited-cell']
+					? [ 'editable-cell', 'edited-cell' ]
 					: 'editable-cell'
 			);
 		},

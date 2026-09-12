@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { PUSH_ROWS_API } from '../constants';
 
-export function useSaveEditedRow() {
+export function useSaveEditedRow () {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -20,10 +20,10 @@ export function useSaveEditedRow() {
 		},
 		onSuccess: ({ row }) => {
 			// Keep the visible query data in sync with the row returned by the server.
-			queryClient.setQueryData(['team-records'], (currentRows = []) =>
+			queryClient.setQueryData([ 'team-records' ], (currentRows = []) =>
 				currentRows.map((currentRow) => (currentRow.id === row.id ? row : currentRow)),
 			);
-			queryClient.invalidateQueries({ queryKey: ['team-records'] });
+			queryClient.invalidateQueries({ queryKey: [ 'team-records' ] });
 		},
 	});
 }

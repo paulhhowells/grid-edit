@@ -3,7 +3,7 @@ import { devtools } from 'zustand/middleware';
 
 const initialState = { editedCells: {} };
 
-export function editedCellsReducer(state, action) {
+export function editedCellsReducer (state, action) {
 	switch (action.type) {
 		case 'record':
 			return {
@@ -33,6 +33,6 @@ export const useEditedCellsStore = create(
 		(set) => ({
 			...initialState,
 			dispatch: (action) => set((state) => editedCellsReducer(state, action)),
-		})
-	)
+		}),
+	),
 );
