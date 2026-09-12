@@ -1,3 +1,11 @@
+export function ActionsCellRenderer (params) {
+	return (
+		params.context?.editedCells?.[params.data.id]
+			? <RowActions data={params.data} context={params.context} />
+			: null
+	);
+}
+
 export function RowActions ({ data, context }) {
 	return (
 		<div className="row-actions">

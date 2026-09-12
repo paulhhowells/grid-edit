@@ -33,8 +33,12 @@ function App () {
 	const rows = initialRows.map((row) => ({ ...row, ...rowOverrides[row.id] }));
 
 	useEffect(() => {
+		const hasEdits = Boolean(Object.keys(editedCells).length > 0);
+
+		gridRef.current?.api.setColumnsVisible([ 'actions' ], hasEdits);
+
 		gridRef.current?.api.refreshCells({
-			columns: [ 'role' ],
+			columns: [ 'role', 'actions' ],
 			force: true,
 		});
 	}, [ editedCells ]);

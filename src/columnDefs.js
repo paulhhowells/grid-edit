@@ -1,4 +1,4 @@
-import { RowActions } from './RowActions';
+import { ActionsCellRenderer } from './ActionsCellRenderer';
 
 export const columnDefs = [
 	{ field: 'name', headerName: 'Name', flex: 1.4, minWidth: 180 },
@@ -23,9 +23,11 @@ export const columnDefs = [
 	{
 		headerName: 'Actions',
 		field: 'actions',
-		width: 168,
+		initialHide: true,
+		pinned: 'right',
+		width: 120,
 		sortable: false,
 		filter: false,
-		cellRenderer: RowActions,
+		cellRenderer: ActionsCellRenderer,
 	},
 ];
