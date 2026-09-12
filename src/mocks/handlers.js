@@ -12,9 +12,14 @@ export const handlers = [
 	http.get(GET_ROWS_API, () => HttpResponse.json(teamRecords)),
 	http.post(PUSH_ROWS_API, async ({ request }) => {
 		const editedRow = await request.json();
+		const editedRowIndex = teamRecords.findIndex((row) => row.id === editedRow.id);
+
+		if (editedRowIndex !== -1) {
+			teamRecords[editedRowIndex] = editedRow;
+		}
 
 		return HttpResponse.json(
-			{ saved: true, row: editedRow },
+			{ saved: editedRowIndex !== -1, row: editedRow },
 			{ status: 201 },
 		);
 	}),
