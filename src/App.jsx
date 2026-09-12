@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import {
 	AllCommunityModule,
@@ -20,6 +20,8 @@ ModuleRegistry.registerModules([
 	ValidationModule,
 ]);
 
+const getRowId = ({ data }) => String(data.id);
+
 function App() {
 	const [rowOverrides, setRowOverrides] = useState({});
 	const gridRef = useRef(null);
@@ -38,7 +40,7 @@ function App() {
 		});
 	}, [editedCells]);
 
-	const handleCellValueChanged = ({ data, colDef, newValue, oldValue }) => {
+	const handleCellValueChanged = useCallback(({ data, colDef, newValue, oldValue }) => {
 		// Ignore when the grid is first initialised.
 		if (oldValue === undefined) {
 			return;
@@ -55,22 +57,28 @@ function App() {
 		}));
 
 		recordEdit(data.id, colDef.field, newValue, oldValue);
-	};
+	}, [recordEdit]);
 
-	const handleUndo = (rowId) => {
+	const handleUndo = useCallback((rowId) => {
 		setRowOverrides((currentOverrides) => {
 			const nextOverrides = { ...currentOverrides };
 			delete nextOverrides[rowId];
 			return nextOverrides;
 		});
 		clearRow(rowId);
-	};
+	}, [clearRow]);
 
-	const handleSave = (editedRow) => {
+	const handleSave = useCallback((editedRow) => {
 		saveEditedRow(editedRow, {
 			onSuccess: () => clearRow(editedRow.id),
 		});
-	};
+	}, [clearRow, saveEditedRow]);
+
+	const gridContext = useMemo(() => ({
+		onSave: handleSave,
+		onUndo: handleUndo,
+		editedCells,
+	}), [editedCells, handleSave, handleUndo]);
 
 	return (
 		<main className="app-shell">
@@ -99,13 +107,9 @@ function App() {
 							ref={gridRef}
 							rowData={rows}
 							columnDefs={columnDefs}
-							context={{
-								onSave: handleSave,
-								onUndo: handleUndo,
-								editedCells,
-							}}
+							context={gridContext}
 							onCellValueChanged={handleCellValueChanged}
-							getRowId={({ data }) => String(data.id)}
+							getRowId={getRowId}
 							headerHeight={52}
 							rowHeight={64}
 							animateRows
