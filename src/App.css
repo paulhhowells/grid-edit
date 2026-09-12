@@ -91,6 +91,8 @@ h1 {
   --ag-header-column-separator-color: transparent;
   --ag-selected-row-background-color: #fff6ee;
   --ag-row-hover-color: #fbf8f0;
+
+	background-color: #FFF;
 }
 
 .grid-state {

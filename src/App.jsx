@@ -3,7 +3,8 @@ import { AgGridReact } from 'ag-grid-react';
 import {
 	AllCommunityModule,
 	ModuleRegistry,
-	ValidationModule
+	ValidationModule,
+	themeBalham,
 } from 'ag-grid-community';
 
 import { columnDefs } from './columnDefs';
@@ -11,8 +12,6 @@ import { useEditedCells } from './hooks/useEditedCells';
 import { useSaveEditedRow } from './hooks/useSaveEditedRow';
 import { useTeamRecords } from './hooks/useTeamRecords';
 
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-quartz.css';
 import './App.css';
 
 ModuleRegistry.registerModules([
@@ -104,7 +103,7 @@ function App() {
 				{
 					(!isLoading && !isError)
 						? (
-							<div className="ag-theme-quartz grid-wrapper">
+							<div className="grid-wrapper">
 								<AgGridReact
 									ref={gridRef}
 									rowData={rows}
@@ -114,6 +113,7 @@ function App() {
 									getRowId={getRowId}
 									headerHeight={52}
 									rowHeight={64}
+									theme={themeBalham}
 									animateRows
 								/>
 							</div>
