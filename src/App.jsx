@@ -119,8 +119,8 @@ function App () {
 									context={gridContext}
 									onCellValueChanged={handleCellValueChanged}
 									getRowId={getRowId}
-									headerHeight={52}
-									rowHeight={64}
+									// headerHeight={52}
+									// rowHeight={64}
 									theme={themeBalham}
 									animateRows
 								/>
