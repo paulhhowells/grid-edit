@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { worker } from './mocks/browser.js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
+import { worker } from './mocks/browser.js';
 
 import App from './App';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
@@ -22,8 +22,14 @@ window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 //   }
 // }
 
-worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
-	createRoot(document.getElementById('root')).render(
+worker
+	.start({ onUnhandledRequest: 'bypass' })
+	.then(
+		() => createRoot(document.getElementById('root')).render(<Root />),
+	);
+
+export function Root () {
+	return (
 		<StrictMode>
 			<ErrorBoundary fallbackRender={ ErrorBoundaryFallback }>
 				<QueryClientProvider client={ queryClient }>
@@ -31,6 +37,6 @@ worker.start({ onUnhandledRequest: 'bypass' }).then(() => {
 					<ReactQueryDevtools initialIsOpen={ false } />
 				</QueryClientProvider>
 			</ErrorBoundary>
-		</StrictMode>,
+		</StrictMode>
 	);
-});
+}
